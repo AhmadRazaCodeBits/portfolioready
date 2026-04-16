@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Mode */
+  --background: #f8fafc;
+  --background-secondary: #f1f5f9;
+  --foreground: #0f172a;
+  --foreground-secondary: #475569;
+  --card: #ffffff;
+  --card-border: #e2e8f0;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --muted: #94a3b8;
+}
+
+.dark {
+  /* Dark Mode - matching Figma */
+  --background: #030712;
+  --background-secondary: #0f172a;
+  --foreground: #f8fafc;
+  --foreground-secondary: #94a3b8;
+  --card: #111827;
+  --card-border: #1f2937;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --muted: #6b7280;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: white;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground-secondary);
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+
+  .pill-badge {
+    @apply inline-flex items-center px-5 py-1.5 rounded-full text-sm font-medium
+           bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200
+           border border-gray-300 dark:border-gray-700;
+  }
+
+  .card-base {
+    @apply bg-[var(--card)] border border-[var(--card-border)] rounded-xl
+           shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+           bg-[var(--foreground)] text-[var(--background)]
+           font-medium text-sm
+           hover:opacity-90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+           border border-[var(--card-border)]
+           text-[var(--foreground)] bg-transparent
+           font-medium text-sm
+           hover:bg-[var(--card)] transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2;
+  }
+
+  .gradient-blur {
+    @apply absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10
+           blur-3xl pointer-events-none;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent;
+  }
+
+  /* Admin Styles */
+  .admin-card {
+    @apply bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6;
+  }
+
+  .admin-input {
+    @apply w-full px-4 py-2.5 rounded-lg
+           bg-[var(--background)] border border-[var(--card-border)]
+           text-[var(--foreground)] placeholder:text-[var(--muted)]
+           focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent
+           transition-all duration-200;
+  }
+
+  .admin-label {
+    @apply block text-sm font-medium text-[var(--foreground-secondary)] mb-1.5;
+  }
+}
+
+@layer utilities {
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+}
