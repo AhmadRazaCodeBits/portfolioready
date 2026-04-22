@@ -58,7 +58,7 @@ export default function Navbar({ navItems = [], profile = {} }) {
 
           <a
             href={profile.resumeUrl || '/resume.pdf'}
-            download
+            download="resume.pdf"
             className="btn-primary text-sm gap-2 px-4 py-2"
           >
             <Download size={16} />
@@ -106,7 +106,7 @@ export default function Navbar({ navItems = [], profile = {} }) {
               ))}
               <a
                 href={profile.resumeUrl || '/resume.pdf'}
-                download
+                download="resume.pdf"
                 className="btn-primary text-sm gap-2 px-4 py-2 w-fit mt-2"
               >
                 <Download size={16} />
