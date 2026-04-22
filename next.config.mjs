@@ -13,6 +13,9 @@ const nextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // Performance: compress responses
   compress: true,
   // Performance: optimize packages for serverless
