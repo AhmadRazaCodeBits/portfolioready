@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Code, Plus, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminSkills() {
   const [skills, setSkills] = useState([]);
@@ -36,6 +37,7 @@ export default function AdminSkills() {
           body: JSON.stringify({ ...form, _id: editing }),
         });
         toast.success('Skill updated!');
+        revalidatePublicSite();
       } else {
         await fetch('/api/skills', {
           method: 'POST',
@@ -43,6 +45,7 @@ export default function AdminSkills() {
           body: JSON.stringify(form),
         });
         toast.success('Skill added!');
+        revalidatePublicSite();
       }
       resetForm();
       loadSkills();
@@ -54,6 +57,7 @@ export default function AdminSkills() {
     try {
       await fetch(`/api/skills?id=${id}`, { method: 'DELETE' });
       toast.success('Skill deleted');
+      revalidatePublicSite();
       loadSkills();
     } catch { toast.error('Error deleting'); }
   };

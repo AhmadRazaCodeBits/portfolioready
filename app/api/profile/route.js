@@ -4,7 +4,9 @@ import { getProfile, updateProfile } from '@/lib/db';
 export async function GET() {
   try {
     const profile = await getProfile();
-    return NextResponse.json(profile);
+    const res = NextResponse.json(profile);
+    res.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    return res;
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

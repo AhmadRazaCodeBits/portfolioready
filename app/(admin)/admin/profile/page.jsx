@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { User, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { revalidatePublicSite } from '@/lib/revalidate';
 import FileUploader from '@/components/shared/FileUploader';
 
 export default function AdminProfile() {
@@ -25,8 +26,12 @@ export default function AdminProfile() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),
       });
-      if (res.ok) toast.success('Profile updated!');
-      else toast.error('Failed to update profile');
+      if (res.ok) {
+        toast.success('Profile updated!');
+        revalidatePublicSite();
+      } else {
+        toast.error('Failed to update profile');
+      }
     } catch { toast.error('Error saving profile'); }
     finally { setSaving(false); }
   };

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Settings, RefreshCw, Database } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminSettings() {
   const [seeding, setSeeding] = useState(false);
@@ -14,6 +15,7 @@ export default function AdminSettings() {
       const res = await fetch('/api/seed', { method: 'POST' });
       if (res.ok) {
         toast.success('Database reset to default data!');
+        revalidatePublicSite();
       } else {
         toast.error('Failed to seed database');
       }
@@ -54,7 +56,7 @@ export default function AdminSettings() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between py-2 border-b border-[var(--card-border)]">
               <span className="text-[var(--foreground-secondary)]">Storage</span>
-              <span className="font-medium">JSON File (Local)</span>
+              <span className="font-medium">MongoDB Atlas</span>
             </div>
             <div className="flex justify-between py-2 border-b border-[var(--card-border)]">
               <span className="text-[var(--foreground-secondary)]">Framework</span>

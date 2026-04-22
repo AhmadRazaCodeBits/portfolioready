@@ -6,7 +6,12 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get('all');
     const skills = all === 'true' ? await getAllSkills() : await getSkills();
-    return NextResponse.json(skills);
+    const res = NextResponse.json(skills);
+    // Only cache public reads, not admin ?all=true reads
+    if (all !== 'true') {
+      res.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    return res;
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

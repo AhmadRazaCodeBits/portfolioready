@@ -6,7 +6,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get('all');
     const projects = all === 'true' ? await getAllProjects() : await getProjects();
-    return NextResponse.json(projects);
+    const res = NextResponse.json(projects);
+    if (all !== 'true') {
+      res.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    return res;
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

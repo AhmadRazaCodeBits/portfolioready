@@ -50,6 +50,11 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  // Required for serverless deployments (Netlify/Vercel) — 
+  // tells NextAuth to trust the host header instead of requiring NEXTAUTH_URL
+  trustHost: true,
+  // Debug mode for troubleshooting (disable in stable production)
+  debug: process.env.NODE_ENV === 'development',
 };
 
 const handler = NextAuth(authOptions);

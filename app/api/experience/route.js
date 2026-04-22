@@ -6,7 +6,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get('all');
     const experience = all === 'true' ? await getAllExperience() : await getExperience();
-    return NextResponse.json(experience);
+    const res = NextResponse.json(experience);
+    if (all !== 'true') {
+      res.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    return res;
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

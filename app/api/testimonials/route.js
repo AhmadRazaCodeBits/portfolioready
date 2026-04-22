@@ -6,7 +6,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const all = searchParams.get('all');
     const testimonials = all === 'true' ? await getAllTestimonials() : await getTestimonials();
-    return NextResponse.json(testimonials);
+    const res = NextResponse.json(testimonials);
+    if (all !== 'true') {
+      res.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    return res;
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

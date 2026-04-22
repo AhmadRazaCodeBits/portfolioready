@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { LayoutDashboard, Plus, Pencil, Trash2, Eye, EyeOff, Save, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { revalidatePublicSite } from '@/lib/revalidate';
 import ImageUploader from '@/components/shared/ImageUploader';
 
 export default function AdminBuilder() {
@@ -55,6 +56,7 @@ export default function AdminBuilder() {
       }
       
       toast.success(editingRow ? 'Section updated' : 'Section created');
+      revalidatePublicSite();
       resetForm();
       loadSections();
     } catch (err) { 
@@ -67,6 +69,7 @@ export default function AdminBuilder() {
     try { 
       await fetch(`/api/dynamic-sections?id=${id}`, { method: 'DELETE' }); 
       toast.success('Deleted'); 
+      revalidatePublicSite();
       loadSections(); 
     } catch { 
       toast.error('Error deleting section'); 

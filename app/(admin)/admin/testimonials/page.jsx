@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { MessageSquare, Plus, Pencil, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminTestimonials() {
   const [items, setItems] = useState([]);
@@ -36,6 +37,7 @@ export default function AdminTestimonials() {
         throw new Error(errorData.message);
       }
       toast.success(editing ? 'Updated!' : 'Added!');
+      revalidatePublicSite();
       resetForm();
       loadItems();
     } catch (err) { toast.error(err.message || 'Error saving'); }
@@ -43,7 +45,7 @@ export default function AdminTestimonials() {
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this testimonial?')) return;
-    try { await fetch(`/api/testimonials?id=${id}`, { method: 'DELETE' }); toast.success('Deleted'); loadItems(); }
+    try { await fetch(`/api/testimonials?id=${id}`, { method: 'DELETE' }); toast.success('Deleted'); revalidatePublicSite(); loadItems(); }
     catch { toast.error('Error deleting'); }
   };
 

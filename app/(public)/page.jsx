@@ -6,19 +6,15 @@ import ProjectsSection from '@/components/public/ProjectsSection';
 import TestimonialsSection from '@/components/public/TestimonialsSection';
 import ContactSection from '@/components/public/ContactSection';
 import DynamicSectionsRenderer from '@/components/public/DynamicSectionsRenderer';
-import { getProfile, getSkills, getExperience, getProjects, getTestimonials, getDynamicSections } from '@/lib/db';
+import { getAllPublicData } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
+// ⚡ ISR: Page is statically generated and revalidated every 60 seconds
+// This eliminates cold-start lag — visitors get instant static HTML
+export const revalidate = 60;
 
 export default async function HomePage() {
-  const [profile, skills, experience, projects, testimonials, dynamicSections] = await Promise.all([
-    getProfile(),
-    getSkills(),
-    getExperience(),
-    getProjects(),
-    getTestimonials(),
-    getDynamicSections()
-  ]);
+  // Single batched DB call instead of 6 separate queries
+  const { profile, skills, experience, projects, testimonials, dynamicSections } = await getAllPublicData();
 
   return (
     <>

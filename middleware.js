@@ -6,9 +6,24 @@ export async function middleware(request) {
 
   // Protect admin routes
   if (pathname.startsWith('/admin')) {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    try {
+      const token = await getToken({ 
+        req: request, 
+        secret: process.env.NEXTAUTH_SECRET,
+        // Required for Netlify: explicitly set the cookie name
+        cookieName: process.env.NODE_ENV === 'production' 
+          ? '__Secure-next-auth.session-token'
+          : 'next-auth.session-token',
+      });
 
-    if (!token) {
+      if (!token) {
+        const loginUrl = new URL('/login', request.url);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+    } catch (error) {
+      // If token validation fails, redirect to login
+      console.error('Middleware auth error:', error.message);
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(loginUrl);
