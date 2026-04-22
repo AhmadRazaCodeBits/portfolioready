@@ -39,7 +39,9 @@ export default function FileUploader({ value, onChange, accept = '*' }) {
         <div className="relative rounded-lg border border-[var(--card-border)] bg-[var(--background)] p-4 flex items-center justify-between group">
           <div className="flex items-center gap-3 overflow-hidden">
             <FileIcon className="text-[var(--accent)] shrink-0" size={24} />
-            <span className="truncate text-sm text-[var(--foreground)]">{value.split('/').pop()}</span>
+            <span className="truncate text-sm text-[var(--foreground)]">
+              {value?.startsWith('data:') ? 'Uploaded Document' : value?.split('/').pop()}
+            </span>
           </div>
           <button
             onClick={() => onChange('')}

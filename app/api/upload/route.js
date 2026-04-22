@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
 
 export async function POST(request) {
   try {
@@ -12,22 +10,16 @@ export async function POST(request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.-]/g, '');
     
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    
-    // Ensure the uploads directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // Ignore if directory already exists
-    }
-
-    await writeFile(path.join(uploadDir, filename), buffer);
+    // In serverless environments (Netlify/Vercel), writing to the local filesystem
+    // is not permitted. We convert the image/file directly to a Base64 encoded Data URI.
+    const mimeType = file.type || 'application/octet-stream';
+    const base64Data = buffer.toString('base64');
+    const fileUri = `data:${mimeType};base64,${base64Data}`;
 
     return NextResponse.json({ 
       success: true, 
-      imageUrl: '/uploads/' + filename 
+      imageUrl: fileUri 
     });
   } catch (error) {
     console.error('Error occurred in /api/upload: ', error);
